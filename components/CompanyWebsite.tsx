@@ -9,6 +9,7 @@ import VideosSection from './sections/VideosSection';
 import SocialSection from './sections/SocialSection';
 import ContactSection from './sections/ContactSection';
 import Footer from './sections/Footer';
+import ShowcaseVideoSection from './sections/ShowcaseVideoSection';
 
 export default function CompanyWebsite() {
   return (
@@ -17,6 +18,7 @@ export default function CompanyWebsite() {
       <HeroSection />
       <AboutSection />
       <TeamSection />
+      <ShowcaseVideoSection />
       <MusicPlayerSection />
       <VideosSection />
       <SocialSection />

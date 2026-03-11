@@ -7,6 +7,7 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { posts } from '../data';
 import CarouselControls from '../ui/CarouselControls';
 import Reveal from '../ui/Reveal';
+import AutoEmblaCarousel from '../ui/AutoEmblaCarousel';
 
 const MAX_DESC_LENGTH = 95;
 
@@ -59,39 +60,60 @@ export default function SocialSection() {
 
         <Reveal delay={0.1}>
           <div className="relative">
-            <div className="overflow-hidden" ref={emblaRef}>
-              <div className="flex gap-4 lg:gap-6">
-                {posts.map((post, i) => (
-                  <div
-                    key={i}
-                    className="cursor-pointer relative aspect-square w-[80%] md:w-[calc(50%-0.5rem)] lg:w-[calc(25%-1.125rem)] flex-none bg-white/5 overflow-hidden group rounded-2xl"
-                  >
-                    <Image
-                      src={post.image}
-                      alt={`Instagram post ${i + 1}`}
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
-                      referrerPolicy="no-referrer"
-                    />
-                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4 flex items-end">
-                      <p className="text-sm md:text-base leading-snug text-white/95">
-                        {truncateText(post.description, MAX_DESC_LENGTH)}
-                      </p>
+            <AutoEmblaCarousel options={{ align: 'start', loop: true }} autoLoop autoInterval={3500}>
+              {(emblaRef, emblaApi) => {
+                useEffect(() => {
+                  if (!emblaApi) return;
+                  const onInit = (api: typeof emblaApi) => setScrollSnaps(api!.scrollSnapList());
+                  const onSelect = (api: typeof emblaApi) => {
+                    setSelectedIndex(api!.selectedScrollSnap());
+                    setPrevDisabled(!api!.canScrollPrev());
+                    setNextDisabled(!api!.canScrollNext());
+                  };
+                  onInit(emblaApi);
+                  onSelect(emblaApi);
+                  emblaApi.on('reInit', onInit);
+                  emblaApi.on('reInit', onSelect);
+                  emblaApi.on('select', onSelect);
+                }, [emblaApi]);
+                return (
+                  <>
+                    <div className="overflow-hidden" ref={emblaRef}>
+                      <div className="flex gap-4 lg:gap-6">
+                        {posts.map((post, i) => (
+                          <div
+                            key={i}
+                            className="cursor-pointer relative aspect-square w-[80%] md:w-[calc(50%-0.5rem)] lg:w-[calc(25%-1.125rem)] flex-none bg-white/5 overflow-hidden group rounded-2xl"
+                          >
+                            <Image
+                              src={post.image}
+                              alt={`Instagram post ${i + 1}`}
+                              fill
+                              className="object-cover transition-transform duration-700 group-hover:scale-105"
+                              referrerPolicy="no-referrer"
+                            />
+                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4 flex items-end">
+                              <p className="text-sm md:text-base leading-snug text-white/95">
+                                {truncateText(post.description, MAX_DESC_LENGTH)}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <CarouselControls
-              scrollSnaps={scrollSnaps}
-              selectedIndex={selectedIndex}
-              scrollTo={scrollTo}
-              scrollPrev={scrollPrev}
-              scrollNext={scrollNext}
-              prevDisabled={prevDisabled}
-              nextDisabled={nextDisabled}
-            />
+                    <CarouselControls
+                      scrollSnaps={scrollSnaps}
+                      selectedIndex={selectedIndex}
+                      scrollTo={scrollTo}
+                      scrollPrev={scrollPrev}
+                      scrollNext={scrollNext}
+                      prevDisabled={prevDisabled}
+                      nextDisabled={nextDisabled}
+                    />
+                  </>
+                );
+              }}
+            </AutoEmblaCarousel>
           </div>
         </Reveal>
 
