@@ -3,6 +3,8 @@
 import Reveal from '../ui/Reveal';
 import Image from 'next/image';
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+
 export default function Footer() {
   return (
     <footer className="py-12 px-6 md:px-8 lg:px-12 border-t border-white/10 bg-black/95">
@@ -11,7 +13,7 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-8 md:gap-0">
             <div className="flex items-center gap-4">
               <div className="relative h-10 w-40">
-                <Image src="/logo-white.PNG" alt="Wave Empire" fill className="object-contain object-left" priority />
+                <Image src={`${basePath}/logo-white.PNG`} alt="Wave Empire" fill className="object-contain object-left" priority />
               </div>
             </div>
             <div className="flex flex-col md:items-end items-center text-white/40 text-sm">

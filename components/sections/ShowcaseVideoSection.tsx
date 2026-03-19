@@ -17,12 +17,12 @@ export default function ShowcaseVideoSection() {
     <section ref={sectionRef} className="relative w-full aspect-video max-w-screen-2xl mx-auto my-24 rounded-3xl overflow-hidden shadow-2xl">
       <video
         className="w-full h-full object-cover"
-        src="/dj-live-event.mp4"
+        src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/dj-live-event.mp4`}
         autoPlay
         loop
         muted
         playsInline
-        poster="/djs.PNG"
+        poster={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/djs.PNG`}
       />
       {/* Stronger black overlay */}
       <div className="absolute inset-0 bg-black/80 pointer-events-none" />

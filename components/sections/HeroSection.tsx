@@ -3,6 +3,8 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import Image from 'next/image';
+
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 import { useHeroReady } from '@/components/context/HeroReadyContext';
 
 export default function HeroSection() {
@@ -38,7 +40,7 @@ export default function HeroSection() {
         transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
       >
         <Image
-          src="/dj-black.PNG"
+          src={`${basePath}/dj-black.PNG`}
           alt="Wave Empire DJs"
           fill
           className="object-cover object-top"

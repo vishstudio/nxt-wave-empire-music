@@ -1,8 +1,10 @@
-'use client';
+"use client";
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import Image from 'next/image';
+
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
 const NAV_ITEMS = ['About', 'Music', 'Videos', 'Social', 'Contact'];
 
@@ -31,7 +33,7 @@ export default function Navbar() {
         >
           <div className="max-w-screen-2xl mx-auto w-full flex justify-between items-center">
             <div className="relative h-10 w-38 md:h-14 md:w-42">
-              <Image src="/logo-white.PNG" alt="Wave Empire" fill className="object-contain object-left" priority />
+              <Image src={`${basePath}/logo-white.PNG`} alt="Wave Empire" fill className="object-contain object-left" priority />
             </div>
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -56,7 +58,7 @@ export default function Navbar() {
             {/* Top row: logo left, close right (match topbar) */}
             <div className="max-w-screen-2xl mx-auto w-full flex justify-between items-center px-6 md:px-8 lg:px-12 pt-8">
               <div className="relative h-10 w-38">
-                <Image src="/logo-white.PNG" alt="Wave Empire" fill className="object-contain object-left" priority />
+                <Image src={`${basePath}/logo-white.PNG`} alt="Wave Empire" fill className="object-contain object-left" priority />
               </div>
               <button
                 onClick={() => setIsMenuOpen(false)}

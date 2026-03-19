@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+
 const BAR_COUNT = 12;
 const BAR_DELAYS = Array.from({ length: BAR_COUNT }, (_, i) => (i * 0.08) % 0.96);
 const BAR_HEIGHTS = [0.4, 0.7, 1, 0.6, 0.9, 0.5, 0.8, 0.45, 0.95, 0.65, 0.75, 0.5];
@@ -71,7 +73,7 @@ export default function Loader({ onComplete }: { onComplete: () => void }) {
             className="relative w-48 md:w-68 h-12 md:h-20 mb-10"
           >
             <Image
-              src="/logo-white.PNG"
+              src={`${basePath}/logo-white.PNG`}
               alt="Wave Empire"
               fill
               className="object-contain"
