@@ -26,22 +26,22 @@ jobs:
       - name: Build (static export via next.config.js)
         env:
           GITHUB_PAGES: "true"
-            NEXT_PUBLIC_BASE_PATH: '/nxt-wave-empire-music'
+          NEXT_PUBLIC_BASE_PATH: "/nxt-wave-empire-music"
         run: npm run build
 
       - name: Add .nojekyll
         run: touch out/.nojekyll
 
-        - name: Inspect generated output
-          run: |
-            echo "-- out tree --"
-            ls -la out || true
-            echo "-- find logos --"
-            find out -type f -iname "*logo*" -print || true
-            echo "-- index.html head --"
-            sed -n '1,120p' out/index.html || true
-            echo "-- grep for logo references --"
-            grep -RIn "logo" out || true
+      - name: Inspect generated output
+        run: |
+          echo "-- out tree --"
+          ls -la out || true
+          echo "-- find logos --"
+          find out -type f -iname "*logo*" -print || true
+          echo "-- index.html head --"
+          sed -n '1,120p' out/index.html || true
+          echo "-- grep for logo references --"
+          grep -RIn "logo" out || true
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
