@@ -1,9 +1,9 @@
 "use client";
 import { useRef, useEffect } from "react";
-import useEmblaCarousel, { EmblaOptionsType } from "embla-carousel-react";
+import useEmblaCarousel from "embla-carousel-react";
 
 interface AutoEmblaCarouselProps {
-  options?: EmblaOptionsType;
+  options?: Parameters<typeof useEmblaCarousel>[0];
   autoLoop?: boolean;
   autoInterval?: number;
   children: (emblaRef: any, emblaApi: any) => React.ReactNode;

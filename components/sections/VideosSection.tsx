@@ -7,7 +7,6 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { videos } from '../data';
 import CarouselControls from '../ui/CarouselControls';
 import Reveal from '../ui/Reveal';
-import AutoEmblaCarousel from '../ui/AutoEmblaCarousel';
 
 export default function VideosSection() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ align: 'start', loop: false });
@@ -32,8 +31,11 @@ export default function VideosSection() {
 
   useEffect(() => {
     if (!emblaApi) return;
-    onInit(emblaApi);
-    onSelect(emblaApi);
+    // defer initial state updates to avoid synchronous setState inside effect
+    queueMicrotask(() => {
+      onInit(emblaApi);
+      onSelect(emblaApi);
+    });
     emblaApi.on('reInit', onInit);
     emblaApi.on('reInit', onSelect);
     emblaApi.on('select', onSelect);
@@ -54,67 +56,45 @@ export default function VideosSection() {
 
         <Reveal delay={0.1}>
           <div className="relative">
-            <AutoEmblaCarousel options={{ align: 'start', loop: false }} autoLoop={false}>
-              {(emblaRef, emblaApi) => {
-                useEffect(() => {
-                  if (!emblaApi) return;
-                  const onInit = (api: typeof emblaApi) => setScrollSnaps(api!.scrollSnapList());
-                  const onSelect = (api: typeof emblaApi) => {
-                    setSelectedIndex(api!.selectedScrollSnap());
-                    setPrevDisabled(!api!.canScrollPrev());
-                    setNextDisabled(!api!.canScrollNext());
-                  };
-                  onInit(emblaApi);
-                  onSelect(emblaApi);
-                  emblaApi.on('reInit', onInit);
-                  emblaApi.on('reInit', onSelect);
-                  emblaApi.on('select', onSelect);
-                }, [emblaApi]);
-                return (
-                  <>
-                    <div className="overflow-hidden" ref={emblaRef}>
-                      <div className="flex gap-4 lg:gap-6">
-                        {videos.map((video) => (
-                          <a
-                            key={video.id}
-                            href={video.url ?? '#'}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex flex-col text-left flex-none w-full md:w-[calc(50%-0.5rem)] lg:w-[calc(25%-1.125rem)] cursor-pointer group"
-                          >
-                            <div className="relative aspect-video w-full mb-4 bg-white/5 rounded-2xl overflow-hidden border-2 border-transparent group-hover:border-white/20 transition-all duration-300">
-                              <Image
-                                src={video.thumbnail}
-                                alt={video.title}
-                                fill
-                                className="object-cover transition-transform duration-700 group-hover:scale-105"
-                                referrerPolicy="no-referrer"
-                              />
-                              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                <div className="w-14 h-14 rounded-full bg-[#FF0000]/90 border-4 border-white/80 flex items-center justify-center shadow-lg">
-                                  <svg viewBox="0 0 24 24" fill="white" className="w-7 h-7 ml-1"><path d="M8 5v14l11-7z" /></svg>
-                                </div>
-                              </div>
-                            </div>
-                            <h3 className="text-lg font-medium tracking-tight mb-1 group-hover:text-white/70 transition-colors duration-200">{video.title}</h3>
-                            <p className="text-white/50 font-mono text-sm">{video.views} views</p>
-                          </a>
-                        ))}
+            <div className="overflow-hidden" ref={emblaRef}>
+              <div className="flex gap-4 lg:gap-6">
+                {videos.map((video) => (
+                  <a
+                    key={video.id}
+                    href={video.url ?? '#'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex flex-col text-left flex-none w-full md:w-[calc(50%-0.5rem)] lg:w-[calc(25%-1.125rem)] cursor-pointer group"
+                  >
+                    <div className="relative aspect-video w-full mb-4 bg-white/5 rounded-2xl overflow-hidden border-2 border-transparent group-hover:border-white/20 transition-all duration-300">
+                      <Image
+                        src={video.thumbnail}
+                        alt={video.title}
+                        fill
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                        referrerPolicy="no-referrer"
+                      />
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <div className="w-14 h-14 rounded-full bg-[#FF0000]/90 border-4 border-white/80 flex items-center justify-center shadow-lg">
+                          <svg viewBox="0 0 24 24" fill="white" className="w-7 h-7 ml-1"><path d="M8 5v14l11-7z" /></svg>
+                        </div>
                       </div>
                     </div>
-                    <CarouselControls
-                      scrollSnaps={scrollSnaps}
-                      selectedIndex={selectedIndex}
-                      scrollTo={scrollTo}
-                      scrollPrev={scrollPrev}
-                      scrollNext={scrollNext}
-                      prevDisabled={prevDisabled}
-                      nextDisabled={nextDisabled}
-                    />
-                  </>
-                );
-              }}
-            </AutoEmblaCarousel>
+                    <h3 className="text-lg font-medium tracking-tight mb-1 group-hover:text-white/70 transition-colors duration-200">{video.title}</h3>
+                    <p className="text-white/50 font-mono text-sm">{video.views} views</p>
+                  </a>
+                ))}
+              </div>
+            </div>
+            <CarouselControls
+              scrollSnaps={scrollSnaps}
+              selectedIndex={selectedIndex}
+              scrollTo={scrollTo}
+              scrollPrev={scrollPrev}
+              scrollNext={scrollNext}
+              prevDisabled={prevDisabled}
+              nextDisabled={nextDisabled}
+            />
           </div>
         </Reveal>
 
