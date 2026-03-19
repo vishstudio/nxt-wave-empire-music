@@ -40,7 +40,7 @@ export default function HeroSection() {
         transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
       >
         <Image
-          src={`${basePath}/dj-black.PNG`}
+          src={`${basePath}/dj-hero.jpg`}
           alt="Wave Empire DJs"
           fill
           className="object-cover object-top"
