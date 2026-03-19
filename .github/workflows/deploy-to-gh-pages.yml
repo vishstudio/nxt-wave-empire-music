@@ -31,7 +31,7 @@ jobs:
 
       - name: Add .nojekyll
         run: touch out/.nojekyll
-      
+
         - name: Inspect generated output
           run: |
             echo "-- out tree --"
